@@ -68,6 +68,10 @@ nav{position:sticky;top:12px;z-index:20;margin:14px auto 0;width:min(1100px,100%
 .sticker.a{left:-14px;top:12%;transform:rotate(-8deg)}
 .sticker.b{right:-6px;bottom:10%;transform:rotate(6deg);background:var(--blush)}
 
+.subs{display:inline-flex;align-items:center;gap:10px;margin-top:22px;background:#fff;border:3px solid var(--mint-deep);border-radius:999px;padding:6px 18px 6px 8px;box-shadow:0 4px 0 var(--mint-deep);font-family:var(--head);font-weight:500;font-size:18px}
+.subs[hidden]{display:none}
+.subs b{background:var(--blush);border:3px solid var(--choc);border-radius:999px;padding:0 12px;font-weight:700;font-size:20px}
+
 /* waffle divider */
 .waffle{height:36px;background:
   linear-gradient(45deg,transparent 46%,rgba(160,100,40,.35) 47% 53%,transparent 54%) 0 0/24px 24px,
@@ -192,6 +196,7 @@ footer .mini{font-family:var(--head);font-size:20px;color:var(--mint-ink);margin
         <a class="btn" href="https://www.youtube.com/@Mintyplays8" target="_blank" rel="noopener">▶ Watch on YouTube</a>
         <a class="btn alt" href="#games">Games I play</a>
       </div>
+      <div class="subs" id="subs" hidden><b id="subcount"></b> subscribers 💚</div>
     </div>
     <div class="portrait">
       <img src="avatar.jpg" alt="Minty and her mint chocolate chip ice cream friend">
@@ -301,6 +306,11 @@ footer .mini{font-family:var(--head);font-size:20px;color:var(--mint-ink);margin
   };
   var meta = function (x) { return [x.views != null ? fmt(x.views) + ' views' : '', x.published ? ago(x.published) : ''].filter(Boolean).join(' \u00b7 '); };
   var thumb = function (x) { return 'background:#bff0da url(https://i.ytimg.com/vi/' + x.id + '/hqdefault.jpg) center/cover'; };
+  fetch('/api/channel').then(function (r) { return r.json(); }).then(function (c) {
+    if (!c.text) return;
+    document.getElementById('subcount').textContent = c.text;
+    document.getElementById('subs').hidden = false;
+  }).catch(function () {});
   var load = function (url, done) { fetch(url).then(function (r) { return r.json(); }).then(function (v) { if (v.length) done(v); }).catch(function () {}); };
 
   load('/api/videos', function (v) {
