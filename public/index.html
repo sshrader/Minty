@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Minty Plays</title>
+<meta name="description" content="Minty Plays: Roblox videos, games and good vibes. Watch on YouTube!">
+<meta name="theme-color" content="#bff0da">
+<link rel="icon" type="image/png" href="favicon.png">
+<meta property="og:title" content="Minty Plays">
+<meta property="og:description" content="Roblox videos, games and good vibes.">
+<meta property="og:image" content="avatar.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --mint:#bff0da; --mint-2:#dcf8ea; --mint-3:#f2fdf7; --mint-deep:#6fcfa8; --mint-ink:#2f8f6c;
+  --choc:#4a2c22; --choc-2:#6b4435; --cone:#e9b878; --cone-2:#f6d9a8; --blush:#ffc4d4; --white:#fff;
+  --head:'Fredoka',system-ui,sans-serif; --body:'Nunito',system-ui,sans-serif;
+  --r:28px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--body);font-weight:600;color:var(--choc);background:var(--mint-3);line-height:1.6;overflow-x:hidden;
+  background-image:radial-gradient(circle at 20% 0%,var(--mint-2) 0,transparent 45%),radial-gradient(circle at 100% 30%,#e7fbf0 0,transparent 40%)}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{font-family:var(--head);margin:0;line-height:1.1}
+.wrap{width:min(1100px,100% - 32px);margin:0 auto;position:relative}
+
+/* floating chips + leaves */
+.deco{position:absolute;pointer-events:none;z-index:0}
+.chip{width:16px;height:12px;background:var(--choc);border-radius:50% 50% 55% 55%/70% 70% 40% 40%;transform:rotate(var(--r,0deg))}
+.leaf{width:34px;height:34px;background:var(--mint-deep);border-radius:0 100% 0 100%;opacity:.55;transform:rotate(var(--r,20deg))}
+.heart{width:18px;height:18px;background:#fff;opacity:.9;transform:rotate(-45deg) scale(var(--s,1));position:absolute}
+@keyframes bob{50%{transform:translateY(-10px) rotate(var(--r,0deg))}}
+.bob{animation:bob 5s ease-in-out infinite}
+
+/* nav */
+nav{position:sticky;top:12px;z-index:20;margin:14px auto 0;width:min(1100px,100% - 24px);display:flex;align-items:center;justify-content:space-between;
+  background:rgba(255,255,255,.85);backdrop-filter:blur(8px);border:3px solid var(--mint-deep);border-radius:999px;padding:8px 10px 8px 12px;box-shadow:0 6px 0 var(--mint-deep)}
+.mark{display:flex;align-items:center;gap:10px;font-family:var(--head);font-weight:700;font-size:22px}
+.mark img{width:44px;height:44px;border-radius:50%;border:3px solid var(--mint-deep);object-fit:cover}
+.mark b{color:var(--mint-ink)}
+.links{display:flex;gap:6px;align-items:center}
+.links a{padding:8px 14px;border-radius:999px;font-weight:800;font-size:15px}
+.links a:hover{background:var(--mint-2)}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--head);font-weight:600;font-size:18px;padding:12px 24px;border-radius:999px;border:3px solid var(--choc);
+  background:var(--choc);color:#fff;box-shadow:0 5px 0 #25140f;transition:transform .12s,box-shadow .12s;cursor:pointer}
+.btn:hover{transform:translateY(2px);box-shadow:0 3px 0 #25140f}
+.btn.alt{background:#fff;color:var(--choc);box-shadow:0 5px 0 var(--mint-deep);border-color:var(--mint-deep)}
+.btn.alt:hover{box-shadow:0 3px 0 var(--mint-deep)}
+.btn.pink{background:var(--blush);color:var(--choc);border-color:var(--choc);box-shadow:0 5px 0 var(--choc)}
+.btn.pink:hover{box-shadow:0 3px 0 var(--choc)}
+
+/* hero */
+.hero{padding:56px 0 72px}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.pill{display:inline-block;background:#fff;border:3px solid var(--mint-deep);color:var(--mint-ink);font-family:var(--head);font-weight:600;padding:4px 16px;border-radius:999px;font-size:15px;letter-spacing:.04em}
+.hero h1{font-size:clamp(46px,8vw,96px);margin:16px 0 12px;color:var(--choc);letter-spacing:-.01em}
+.hero h1 span{color:var(--mint-ink);position:relative;display:inline-block}
+.hero h1 span::after{content:"";position:absolute;left:0;right:0;bottom:2px;height:14px;background:var(--mint-deep);opacity:.45;border-radius:99px;z-index:-1}
+.hero p.lede{font-size:20px;max-width:480px;margin:0 0 26px;color:var(--choc-2)}
+.cta{display:flex;flex-wrap:wrap;gap:14px}
+.portrait{position:relative;justify-self:center;width:min(440px,100%)}
+.portrait img{width:100%;aspect-ratio:1;border-radius:50%;object-fit:cover;border:8px solid #fff;box-shadow:0 0 0 6px var(--mint-deep),0 24px 40px rgba(47,143,108,.28)}
+.sticker{position:absolute;font-family:var(--head);font-weight:700;background:#fff;border:3px solid var(--choc);border-radius:18px;padding:6px 14px;box-shadow:0 4px 0 var(--choc);font-size:17px}
+.sticker.a{left:-14px;top:12%;transform:rotate(-8deg)}
+.sticker.b{right:-6px;bottom:10%;transform:rotate(6deg);background:var(--blush)}
+
+/* waffle divider */
+.waffle{height:36px;background:
+  linear-gradient(45deg,transparent 46%,rgba(160,100,40,.35) 47% 53%,transparent 54%) 0 0/24px 24px,
+  linear-gradient(-45deg,transparent 46%,rgba(160,100,40,.35) 47% 53%,transparent 54%) 0 0/24px 24px,var(--cone);
+  border-block:4px solid #cf9a5a}
+
+section{padding:72px 0;position:relative}
+.sec-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:28px;flex-wrap:wrap}
+.sec-head h2{font-size:clamp(32px,5vw,50px)}
+.sec-head h2 i{font-style:normal;color:var(--mint-ink)}
+.sec-head p{margin:6px 0 0;color:var(--choc-2)}
+
+/* videos */
+.vids{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:22px}
+.vid{background:#fff;border:3px solid var(--choc);border-radius:var(--r);overflow:hidden;box-shadow:0 8px 0 var(--choc);transition:transform .15s}
+.vid:hover{transform:translateY(-4px) rotate(-.6deg)}
+.thumb{aspect-ratio:16/9;position:relative;display:grid;place-items:center;background:var(--mint)}
+.thumb.t2{background:linear-gradient(135deg,#ffd6e1,#ffc4d4)}
+.thumb.t3{background:linear-gradient(135deg,#e9b878,#f6d9a8)}
+.thumb.t4{background:linear-gradient(135deg,#9fe3c5,#6fcfa8)}
+.play{width:62px;height:62px;border-radius:50%;background:#fff;border:3px solid var(--choc);display:grid;place-items:center;box-shadow:0 4px 0 var(--choc)}
+.play::after{content:"";border-left:18px solid var(--choc);border-block:11px solid transparent;margin-left:5px}
+.tag{position:absolute;left:10px;top:10px;background:#fff;border:2px solid var(--choc);border-radius:999px;font-family:var(--head);font-size:13px;padding:1px 10px}
+.vid .meta{padding:14px 16px 16px}
+.vid h3{font-size:20px;margin-bottom:4px}
+.vid small{color:var(--choc-2);font-weight:700}
+
+/* roblox */
+.games{background:var(--mint);border-block:4px solid var(--mint-deep)}
+.gamegrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
+.game{background:#fff;border-radius:var(--r);padding:20px;border:3px solid var(--mint-deep);text-align:center;box-shadow:0 6px 0 var(--mint-deep)}
+.game .ico{width:76px;height:76px;margin:0 auto 12px;border-radius:22px;display:grid;place-items:center;font-size:38px;border:3px solid var(--choc);background:var(--mint-2)}
+.game h3{font-size:22px}
+.game p{margin:6px 0 0;font-size:15px;color:var(--choc-2)}
+
+/* about */
+.about .wrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:44px;align-items:center}
+.scoop{position:relative;justify-self:center;width:min(300px,80%);aspect-ratio:.8}
+.scoop .ball{position:absolute;inset:0 0 28% 0;background:var(--mint);border-radius:50% 50% 46% 46%;border:4px solid var(--choc);overflow:hidden}
+.scoop .ball::before{content:"";position:absolute;inset:auto -10% -6% -10%;height:26%;background:var(--mint-deep);opacity:.5;border-radius:50%}
+.scoop .cone{position:absolute;left:14%;right:14%;bottom:0;height:42%;background:
+  linear-gradient(45deg,transparent 46%,rgba(160,100,40,.4) 47% 53%,transparent 54%) 0 0/22px 22px,
+  linear-gradient(-45deg,transparent 46%,rgba(160,100,40,.4) 47% 53%,transparent 54%) 0 0/22px 22px,var(--cone);
+  clip-path:polygon(0 0,100% 0,50% 100%);border-bottom:0}
+.scoop .face{position:absolute;left:50%;top:34%;transform:translateX(-50%);display:flex;gap:34px;z-index:2}
+.scoop .face i{width:16px;height:22px;background:var(--choc);border-radius:50%;position:relative}
+.scoop .face i::after{content:"";position:absolute;width:6px;height:6px;background:#fff;border-radius:50%;left:3px;top:4px}
+.scoop .smile{position:absolute;left:50%;top:52%;width:34px;height:18px;border-bottom:4px solid var(--choc);border-radius:0 0 40px 40px;transform:translateX(-50%);z-index:2}
+.scoop .cheek{position:absolute;top:50%;width:26px;height:16px;background:var(--blush);border-radius:50%;opacity:.8;z-index:2}
+.scoop .cheek.l{left:18%}.scoop .cheek.r{right:18%}
+.scoop .c{position:absolute;z-index:1}
+.about h2{font-size:clamp(32px,5vw,50px);margin-bottom:14px}
+.about p{font-size:18px;color:var(--choc-2);margin:0 0 14px}
+.facts{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.facts span{background:#fff;border:3px solid var(--mint-deep);border-radius:999px;padding:6px 16px;font-family:var(--head);font-weight:500}
+
+/* schedule + safety */
+.sched{background:var(--choc);color:#fff;border-radius:var(--r);padding:34px;display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center;position:relative;overflow:hidden}
+.sched h2{font-size:clamp(28px,4vw,40px);color:var(--mint)}
+.sched p{margin:8px 0 0;color:#f0dfd6}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.days b{font-family:var(--head);text-align:center;padding:10px 0;border-radius:14px;background:rgba(255,255,255,.1);font-weight:500}
+.days b.on{background:var(--mint);color:var(--choc);box-shadow:0 4px 0 var(--mint-deep)}
+.parents{margin-top:26px;background:#fff;border:3px dashed var(--mint-deep);border-radius:var(--r);padding:20px 24px;display:flex;gap:16px;align-items:flex-start}
+.parents .ic{font-size:30px}
+.parents h3{font-size:20px;margin-bottom:4px}
+.parents p{margin:0;font-size:15.5px;color:var(--choc-2)}
+
+/* follow */
+.follow{text-align:center}
+.follow h2{font-size:clamp(34px,6vw,64px)}
+.follow p{font-size:19px;color:var(--choc-2);margin:10px auto 26px;max-width:520px}
+.follow .cta{justify-content:center}
+
+footer{padding:40px 0 30px;text-align:center;color:var(--choc-2);font-size:14px;position:relative}
+footer .mini{font-family:var(--head);font-size:20px;color:var(--mint-ink);margin-bottom:4px}
+
+@media(max-width:820px){
+  .hero .wrap,.about .wrap,.sched{grid-template-columns:1fr}
+  .portrait{order:-1;width:min(300px,80%)}
+  .links a:not(.btn){display:none}
+  .hero{padding-top:30px}
+  .days b{font-size:13px;padding:8px 0}
+}
+@media(prefers-reduced-motion:reduce){.bob{animation:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="mark" href="#top"><img src="avatar.jpg" alt="Minty Plays logo"><span>Minty <b>Plays</b></span></a>
+  <div class="links">
+    <a href="#videos">Videos</a><a href="#games">Games</a><a href="#about">About</a><a href="#schedule">Schedule</a>
+    <a class="btn pink" style="padding:8px 18px;font-size:16px;box-shadow:0 4px 0 var(--choc)" href="https://youtube.com/@mintyplays" target="_blank" rel="noopener">Subscribe</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <span class="deco chip bob" style="left:6%;top:16%;--r:20deg"></span>
+  <span class="deco chip bob" style="left:46%;top:8%;--r:-30deg;animation-delay:-2s"></span>
+  <span class="deco leaf bob" style="left:3%;top:60%;--r:40deg;animation-delay:-1s"></span>
+  <span class="deco leaf bob" style="right:4%;top:10%;--r:-20deg;animation-delay:-3s"></span>
+  <span class="deco chip bob" style="right:10%;bottom:8%;--r:50deg;animation-delay:-4s"></span>
+  <div class="wrap">
+    <div>
+      <span class="pill">🍃 Roblox · Videos · Fun</span>
+      <h1>Hi, I'm<br><span>Minty!</span></h1>
+      <p class="lede">Welcome to my corner of the internet. I play Roblox, make videos and share the sweetest adventures. Come hang out!</p>
+      <div class="cta">
+        <a class="btn" href="https://youtube.com/@mintyplays" target="_blank" rel="noopener">▶ Watch on YouTube</a>
+        <a class="btn alt" href="#games">Games I play</a>
+      </div>
+    </div>
+    <div class="portrait">
+      <img src="avatar.jpg" alt="Minty and her mint chocolate chip ice cream friend">
+      <span class="sticker a">New video every week!</span>
+      <span class="sticker b">Stay minty 💚</span>
+    </div>
+  </div>
+</header>
+
+<div class="waffle" aria-hidden="true"></div>
+
+<section id="videos">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><h2>Latest <i>videos</i></h2><p>Fresh scoops from the channel.</p></div>
+      <a class="btn alt" href="https://youtube.com/@mintyplays" target="_blank" rel="noopener">See all videos →</a>
+    </div>
+    <div class="vids">
+      <a class="vid" href="#"><div class="thumb"><span class="tag">NEW</span><span class="play"></span></div><div class="meta"><h3>Video title goes here</h3><small>Roblox · 12K views</small></div></a>
+      <a class="vid" href="#"><div class="thumb t2"><span class="play"></span></div><div class="meta"><h3>Another fun Roblox video</h3><small>Roblox · 8.4K views</small></div></a>
+      <a class="vid" href="#"><div class="thumb t3"><span class="play"></span></div><div class="meta"><h3>Mint chip challenge!</h3><small>Challenge · 5.1K views</small></div></a>
+      <a class="vid" href="#"><div class="thumb t4"><span class="play"></span></div><div class="meta"><h3>Building my dream house</h3><small>Roblox · 3.9K views</small></div></a>
+    </div>
+  </div>
+</section>
+
+<section class="games" id="games">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><h2>Games I <i>love</i></h2><p>Where you'll find me on Roblox.</p></div>
+    </div>
+    <div class="gamegrid">
+      <div class="game"><div class="ico">🏠</div><h3>Game one</h3><p>Why it's my favorite goes here.</p></div>
+      <div class="game"><div class="ico">🐾</div><h3>Game two</h3><p>Pets, fun and surprises.</p></div>
+      <div class="game"><div class="ico">🏃</div><h3>Game three</h3><p>Fast, silly and a little scary.</p></div>
+      <div class="game"><div class="ico">🍦</div><h3>Game four</h3><p>Cozy builds and good vibes.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="wrap">
+    <div class="scoop" aria-hidden="true">
+      <div class="ball">
+        <span class="c chip" style="left:18%;top:20%;--r:20deg"></span><span class="c chip" style="left:66%;top:14%;--r:-30deg"></span>
+        <span class="c chip" style="left:78%;top:52%;--r:40deg"></span><span class="c chip" style="left:10%;top:62%;--r:-10deg"></span>
+        <span class="c chip" style="left:44%;top:74%;--r:30deg"></span>
+      </div>
+      <span class="face"><i></i><i></i></span><span class="cheek l"></span><span class="cheek r"></span><span class="smile"></span>
+      <div class="cone"></div>
+    </div>
+    <div>
+      <h2>About <span style="color:var(--mint-ink)">Minty</span></h2>
+      <p>Hi! I make videos about the games I love. Mint chocolate chip is my favorite flavor, so it's kind of my whole thing. 🍦</p>
+      <p>I'm so happy you're here. Be kind in the comments and have fun!</p>
+      <div class="facts"><span>🍃 Mint choc chip fan</span><span>🎮 Roblox player</span><span>🎬 YouTuber</span><span>🦄 Unicorn at heart</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="schedule" style="padding-top:0">
+  <div class="wrap">
+    <div class="sched">
+      <span class="deco chip" style="right:20px;top:14px;--r:30deg;opacity:.4"></span>
+      <div><h2>Upload days</h2><p>New videos land on the highlighted days. Turn on the bell so you don't miss one!</p></div>
+      <div class="days"><b>Mon</b><b>Tue</b><b class="on">Wed</b><b>Thu</b><b>Fri</b><b class="on">Sat</b><b>Sun</b></div>
+    </div>
+    <div class="parents">
+      <div class="ic">💚</div>
+      <div><h3>For grown-ups</h3><p>This is a kid-friendly channel. We keep personal info private, and comments are moderated. Questions or business inquiries: <a href="mailto:hello@example.com" style="text-decoration:underline">hello@example.com</a>.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="follow">
+  <div class="wrap">
+    <h2>Stay <span style="color:var(--mint-ink)">minty</span> 💚</h2>
+    <p>Subscribe on YouTube so you never miss a video.</p>
+    <div class="cta">
+      <a class="btn" href="https://youtube.com/@mintyplays" target="_blank" rel="noopener">▶ Subscribe</a>
+      <a class="btn alt" href="#top">Back to top ↑</a>
+    </div>
+  </div>
+</section>
+
+<div class="waffle" aria-hidden="true"></div>
+<footer>
+  <div class="mini">Minty Plays</div>
+  &copy; <script>document.write(new Date().getFullYear())</script> · Made with mint chocolate chip
+</footer>
+</body>
+</html>

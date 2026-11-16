@@ -1,0 +1,1 @@
+{ "name": "minty-plays", "private": true, "version": "1.0.0", "type": "module", "engines": { "node": ">=20" }, "scripts": { "start": "node server/index.mjs" } }
