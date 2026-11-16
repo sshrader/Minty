@@ -96,7 +96,7 @@ section{padding:72px 0;position:relative}
 .vid small{color:var(--choc-2);font-weight:700}
 
 /* shorts */
-#shorts{padding-top:0}
+#shorts{padding-bottom:0}
 .shorts{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:18px}
 .short{background:#fff;border:3px solid var(--choc);border-radius:24px;overflow:hidden;box-shadow:0 7px 0 var(--mint-deep);transition:transform .15s}
 .short:hover{transform:translateY(-4px) rotate(.6deg)}
@@ -172,7 +172,7 @@ footer .mini{font-family:var(--head);font-size:20px;color:var(--mint-ink);margin
 <nav>
   <a class="mark" href="#top"><img src="avatar.jpg" alt="Minty Plays logo"><span>Minty <b>Plays</b></span></a>
   <div class="links">
-    <a href="#videos">Videos</a><a href="#games">Games</a><a href="#about">About</a><a href="#schedule">Schedule</a>
+    <a href="#shorts">Shorts</a><a href="#videos">Videos</a><a href="#store">Store</a><a href="#about">About</a>
     <a class="btn pink" style="padding:8px 18px;font-size:16px;box-shadow:0 4px 0 var(--choc)" href="https://www.youtube.com/@Mintyplays8" target="_blank" rel="noopener">Subscribe</a>
   </div>
 </nav>
@@ -203,6 +203,16 @@ footer .mini{font-family:var(--head);font-size:20px;color:var(--mint-ink);margin
 
 <div class="waffle" aria-hidden="true"></div>
 
+<section id="shorts" hidden>
+  <div class="wrap">
+    <div class="sec-head">
+      <div><h2>Minty <i>Shorts</i></h2><p>Quick bites, under a minute.</p></div>
+      <a class="btn alt" href="https://www.youtube.com/@Mintyplays8/shorts" target="_blank" rel="noopener">All shorts →</a>
+    </div>
+    <div class="shorts" id="shortgrid"></div>
+  </div>
+</section>
+
 <section id="videos">
   <div class="wrap">
     <div class="sec-head">
@@ -212,16 +222,6 @@ footer .mini{font-family:var(--head);font-size:20px;color:var(--mint-ink);margin
     <div class="vids" id="vids">
       <a class="vid" href="https://www.youtube.com/@Mintyplays8" target="_blank" rel="noopener"><div class="thumb"><span class="play"></span></div><div class="meta"><h3>Watch the latest on YouTube</h3><small>Minty Plays</small></div></a>
     </div>
-  </div>
-</section>
-
-<section id="shorts" hidden>
-  <div class="wrap">
-    <div class="sec-head">
-      <div><h2>Minty <i>Shorts</i></h2><p>Quick bites, under a minute.</p></div>
-      <a class="btn alt" href="https://www.youtube.com/@Mintyplays8/shorts" target="_blank" rel="noopener">All shorts →</a>
-    </div>
-    <div class="shorts" id="shortgrid"></div>
   </div>
 </section>
 
