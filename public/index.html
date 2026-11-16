@@ -197,11 +197,8 @@ footer .mini{font-family:var(--head);font-size:20px;color:var(--mint-ink);margin
       <div><h2>Latest <i>videos</i></h2><p>Fresh scoops from the channel.</p></div>
       <a class="btn alt" href="https://www.youtube.com/@Mintyplays8" target="_blank" rel="noopener">See all videos →</a>
     </div>
-    <div class="vids">
-      <a class="vid" href="#"><div class="thumb"><span class="tag">NEW</span><span class="play"></span></div><div class="meta"><h3>Video title goes here</h3><small>Roblox · 12K views</small></div></a>
-      <a class="vid" href="#"><div class="thumb t2"><span class="play"></span></div><div class="meta"><h3>Another fun Roblox video</h3><small>Roblox · 8.4K views</small></div></a>
-      <a class="vid" href="#"><div class="thumb t3"><span class="play"></span></div><div class="meta"><h3>Mint chip challenge!</h3><small>Challenge · 5.1K views</small></div></a>
-      <a class="vid" href="#"><div class="thumb t4"><span class="play"></span></div><div class="meta"><h3>Building my dream house</h3><small>Roblox · 3.9K views</small></div></a>
+    <div class="vids" id="vids">
+      <a class="vid" href="https://www.youtube.com/@Mintyplays8" target="_blank" rel="noopener"><div class="thumb"><span class="play"></span></div><div class="meta"><h3>Watch the latest on YouTube</h3><small>Minty Plays</small></div></a>
     </div>
   </div>
 </section>
@@ -270,5 +267,28 @@ footer .mini{font-family:var(--head);font-size:20px;color:var(--mint-ink);margin
   <div class="mini">Minty Plays</div>
   &copy; <script>document.write(new Date().getFullYear())</script> · Made with mint chocolate chip
 </footer>
+<script>
+// Fill the video cards with the channel's newest uploads. If the feed is unavailable, the fallback card above stays.
+(function () {
+  var box = document.getElementById('vids');
+  var esc = function (t) { return String(t).replace(/[&<>"']/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); };
+  var fmt = function (n) { return n >= 1e6 ? (n / 1e6).toFixed(1) + 'M' : n >= 1e3 ? (n / 1e3).toFixed(1).replace('.0', '') + 'K' : String(n); };
+  var ago = function (iso) {
+    var d = Math.floor((Date.now() - new Date(iso)) / 864e5);
+    if (!(d >= 0)) return '';
+    return d < 1 ? 'today' : d < 7 ? d + 'd ago' : d < 30 ? Math.floor(d / 7) + 'w ago' : d < 365 ? Math.floor(d / 30) + 'mo ago' : Math.floor(d / 365) + 'y ago';
+  };
+  fetch('/api/videos').then(function (r) { return r.json(); }).then(function (v) {
+    if (!v.length) return;
+    box.innerHTML = v.map(function (x, i) {
+      var meta = [x.views != null ? fmt(x.views) + ' views' : '', x.published ? ago(x.published) : ''].filter(Boolean).join(' \u00b7 ');
+      return '<a class="vid" href="https://www.youtube.com/watch?v=' + x.id + '" target="_blank" rel="noopener">' +
+        '<div class="thumb" style="background:#bff0da url(https://i.ytimg.com/vi/' + x.id + '/hqdefault.jpg) center/cover">' +
+        (i === 0 ? '<span class="tag">NEW</span>' : '') + '<span class="play"></span></div>' +
+        '<div class="meta"><h3>' + esc(x.title) + '</h3><small>' + esc(meta) + '</small></div></a>';
+    }).join('');
+  }).catch(function () {});
+})();
+</script>
 </body>
 </html>
