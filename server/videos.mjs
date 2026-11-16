@@ -1,6 +1,8 @@
-// Latest uploads from the channel's public RSS feed, cached so YouTube is hit at most once per TTL.
+// Latest videos and Shorts from the channel's public RSS feeds, cached so YouTube is hit at most once per TTL.
 const CHANNEL_ID = process.env.YT_CHANNEL_ID || 'UCAndS1Aeexxtf6bags0hI1w';
-const FEED = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
+// YouTube keeps hidden playlists per channel: UULF... = long videos only, UUSH... = Shorts only (same id as UC..., prefix swapped).
+const feedFor = (prefix) => `https://www.youtube.com/feeds/videos.xml?playlist_id=${prefix}${CHANNEL_ID.slice(2)}`;
+const FEEDS = { videos: feedFor('UULF'), shorts: feedFor('UUSH') };
 const TTL = 15 * 60_000;
 const COUNT = 4;
 
@@ -25,18 +27,22 @@ export function parseFeed(xml, count = COUNT) {
   return out;
 }
 
-let cache = { at: 0, videos: [] };
+const cache = { videos: { at: 0, items: [] }, shorts: { at: 0, items: [] } };
 
-export async function latestVideos() {
-  if (cache.videos.length && Date.now() - cache.at < TTL) return cache.videos;
+/** kind = 'videos' | 'shorts'. Returns up to 4 items, newest first, or [] when the feed cannot be read. */
+export async function latest(kind) {
+  const c = cache[kind];
+  if (!c || !FEEDS[kind]) return [];
+  if (c.items.length && Date.now() - c.at < TTL) return c.items;
+  if (!c.items.length && Date.now() - c.at < 60_000) return c.items; // failed a moment ago: do not hammer YouTube
+  c.at = Date.now();
   try {
-    const r = await fetch(FEED, { signal: AbortSignal.timeout(5000) });
-    if (!r.ok) throw new Error(`feed ${r.status}`);
-    const videos = parseFeed(await r.text());
-    if (videos.length) cache = { at: Date.now(), videos };
+    const r = await fetch(FEEDS[kind], { signal: AbortSignal.timeout(5000) });
+    if (!r.ok) throw new Error(`${kind} feed ${r.status}`);
+    const items = parseFeed(await r.text());
+    if (items.length) c.items = items;
   } catch (e) {
     console.error('videos: could not load feed:', e.message);
-    if (!cache.videos.length) cache.at = Date.now() - TTL + 60_000; // retry in a minute, serve [] meanwhile
   }
-  return cache.videos;
+  return c.items;
 }

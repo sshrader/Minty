@@ -2,7 +2,7 @@
 import http from 'node:http';
 import path from 'node:path';
 import fs from 'node:fs/promises';
-import { latestVideos } from './videos.mjs';
+import { latest } from './videos.mjs';
 
 const PORT = Number(process.env.PORT) || 8787;
 const DIR = path.resolve(process.env.SITE_DIR || 'public');
@@ -16,7 +16,8 @@ const send = (res, status, body, type = 'text/plain; charset=utf-8', extra = {})
 http.createServer(async (req, res) => {
   const url = new URL(req.url, 'http://x');
   if (url.pathname === '/api/health') return send(res, 200, '{"ok":true}', 'application/json');
-  if (url.pathname === '/api/videos') return send(res, 200, JSON.stringify(await latestVideos()), 'application/json; charset=utf-8', { 'cache-control': 'public, max-age=300' });
+  if (url.pathname === '/api/videos') return send(res, 200, JSON.stringify(await latest('videos')), 'application/json; charset=utf-8', { 'cache-control': 'public, max-age=300' });
+  if (url.pathname === '/api/shorts') return send(res, 200, JSON.stringify(await latest('shorts')), 'application/json; charset=utf-8', { 'cache-control': 'public, max-age=300' });
   if (req.method !== 'GET' && req.method !== 'HEAD') return send(res, 405, 'Method not allowed');
   let rel;
   try { rel = decodeURIComponent(url.pathname); } catch { rel = '/'; }

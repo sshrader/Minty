@@ -4,6 +4,8 @@ Static site (`public/index.html`, all CSS inline) plus a tiny dependency-free No
 
     npm start      # http://localhost:8787
 
+The video and Shorts rows load from the channel automatically (`/api/videos`, `/api/shorts`; override the channel with `YT_CHANNEL_ID`).
+
 Edit the placeholders in `public/index.html`: YouTube link (`youtube.com/@Mintyplays8`), video cards, game cards, upload days and the contact email.
 
 ## Railway

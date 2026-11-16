@@ -95,6 +95,18 @@ section{padding:72px 0;position:relative}
 .vid h3{font-size:20px;margin-bottom:4px}
 .vid small{color:var(--choc-2);font-weight:700}
 
+/* shorts */
+#shorts{padding-top:0}
+.shorts{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:18px}
+.short{background:#fff;border:3px solid var(--choc);border-radius:24px;overflow:hidden;box-shadow:0 7px 0 var(--mint-deep);transition:transform .15s}
+.short:hover{transform:translateY(-4px) rotate(.6deg)}
+.short .thumb{aspect-ratio:9/14;background:var(--mint)}
+.short .play{width:48px;height:48px}
+.short .play::after{border-left-width:14px;border-block-width:9px;margin-left:4px}
+.short .meta{padding:10px 12px 12px}
+.short h3{font-size:16px;line-height:1.2;margin-bottom:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.short small{color:var(--choc-2);font-weight:700;font-size:13px}
+
 /* roblox */
 .games{background:var(--mint);border-block:4px solid var(--mint-deep)}
 .gamegrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
@@ -203,6 +215,16 @@ footer .mini{font-family:var(--head);font-size:20px;color:var(--mint-ink);margin
   </div>
 </section>
 
+<section id="shorts" hidden>
+  <div class="wrap">
+    <div class="sec-head">
+      <div><h2>Minty <i>Shorts</i></h2><p>Quick bites, under a minute.</p></div>
+      <a class="btn alt" href="https://www.youtube.com/@Mintyplays8/shorts" target="_blank" rel="noopener">All shorts →</a>
+    </div>
+    <div class="shorts" id="shortgrid"></div>
+  </div>
+</section>
+
 <section class="games" id="games">
   <div class="wrap">
     <div class="sec-head">
@@ -268,9 +290,8 @@ footer .mini{font-family:var(--head);font-size:20px;color:var(--mint-ink);margin
   &copy; <script>document.write(new Date().getFullYear())</script> · Made with mint chocolate chip
 </footer>
 <script>
-// Fill the video cards with the channel's newest uploads. If the feed is unavailable, the fallback card above stays.
+// Fill the video and Shorts cards with the channel's newest uploads. If a feed is unavailable, its fallback stays (videos) or hides (shorts).
 (function () {
-  var box = document.getElementById('vids');
   var esc = function (t) { return String(t).replace(/[&<>"']/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); };
   var fmt = function (n) { return n >= 1e6 ? (n / 1e6).toFixed(1) + 'M' : n >= 1e3 ? (n / 1e3).toFixed(1).replace('.0', '') + 'K' : String(n); };
   var ago = function (iso) {
@@ -278,16 +299,25 @@ footer .mini{font-family:var(--head);font-size:20px;color:var(--mint-ink);margin
     if (!(d >= 0)) return '';
     return d < 1 ? 'today' : d < 7 ? d + 'd ago' : d < 30 ? Math.floor(d / 7) + 'w ago' : d < 365 ? Math.floor(d / 30) + 'mo ago' : Math.floor(d / 365) + 'y ago';
   };
-  fetch('/api/videos').then(function (r) { return r.json(); }).then(function (v) {
-    if (!v.length) return;
-    box.innerHTML = v.map(function (x, i) {
-      var meta = [x.views != null ? fmt(x.views) + ' views' : '', x.published ? ago(x.published) : ''].filter(Boolean).join(' \u00b7 ');
+  var meta = function (x) { return [x.views != null ? fmt(x.views) + ' views' : '', x.published ? ago(x.published) : ''].filter(Boolean).join(' \u00b7 '); };
+  var thumb = function (x) { return 'background:#bff0da url(https://i.ytimg.com/vi/' + x.id + '/hqdefault.jpg) center/cover'; };
+  var load = function (url, done) { fetch(url).then(function (r) { return r.json(); }).then(function (v) { if (v.length) done(v); }).catch(function () {}); };
+
+  load('/api/videos', function (v) {
+    document.getElementById('vids').innerHTML = v.map(function (x, i) {
       return '<a class="vid" href="https://www.youtube.com/watch?v=' + x.id + '" target="_blank" rel="noopener">' +
-        '<div class="thumb" style="background:#bff0da url(https://i.ytimg.com/vi/' + x.id + '/hqdefault.jpg) center/cover">' +
-        (i === 0 ? '<span class="tag">NEW</span>' : '') + '<span class="play"></span></div>' +
-        '<div class="meta"><h3>' + esc(x.title) + '</h3><small>' + esc(meta) + '</small></div></a>';
+        '<div class="thumb" style="' + thumb(x) + '">' + (i === 0 ? '<span class="tag">NEW</span>' : '') + '<span class="play"></span></div>' +
+        '<div class="meta"><h3>' + esc(x.title) + '</h3><small>' + esc(meta(x)) + '</small></div></a>';
     }).join('');
-  }).catch(function () {});
+  });
+  load('/api/shorts', function (v) {
+    document.getElementById('shortgrid').innerHTML = v.map(function (x) {
+      return '<a class="short" href="https://www.youtube.com/shorts/' + x.id + '" target="_blank" rel="noopener">' +
+        '<div class="thumb" style="' + thumb(x) + '"><span class="play"></span></div>' +
+        '<div class="meta"><h3>' + esc(x.title) + '</h3><small>' + esc(meta(x)) + '</small></div></a>';
+    }).join('');
+    document.getElementById('shorts').hidden = false;
+  });
 })();
 </script>
 </body>
