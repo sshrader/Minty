@@ -163,6 +163,9 @@ section{padding:72px 0;position:relative}
 .follow .cta{justify-content:center}
 
 footer{padding:40px 0 30px;text-align:center;color:var(--choc-2);font-size:14px;position:relative}
+footer .visitors{display:inline-block;margin:8px 0 6px;background:#fff;border:3px solid var(--mint-deep);border-radius:999px;padding:2px 16px;font-family:var(--head);font-weight:500;font-size:16px;color:var(--choc)}
+footer .visitors[hidden]{display:none}
+footer .visitors b{color:var(--mint-ink)}
 footer .mini{font-family:var(--head);font-size:20px;color:var(--mint-ink);margin-bottom:4px}
 
 @media(max-width:820px){
@@ -297,6 +300,7 @@ footer .mini{font-family:var(--head);font-size:20px;color:var(--mint-ink);margin
 <div class="waffle" aria-hidden="true"></div>
 <footer>
   <div class="mini">Minty Plays</div>
+  <div class="visitors" id="visitorsbox" hidden>👀 <b id="visitors"></b> <span id="vlabel">unique visitors</span></div><br>
   &copy; <script>document.write(new Date().getFullYear())</script> · Made with mint chocolate chip
 </footer>
 <script>
@@ -341,6 +345,24 @@ footer .mini{font-family:var(--head);font-size:20px;color:var(--mint-ink);margin
     }).join('');
     document.getElementById('shorts').hidden = false;
   });
+})();
+</script>
+<script>
+// Unique visitor counter: a browser reports itself at most once a day; the server decides what counts. No cookies, no IP addresses stored.
+(function () {
+  var el = document.getElementById('visitors');
+  var seen = null;
+  try { seen = localStorage.getItem('minty-seen'); } catch (e) {}
+  var stale = !seen || Date.now() - Number(seen) > 864e5;
+  fetch('/api/site/visits', stale ? { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ first: !seen }) } : undefined)
+    .then(function (r) { return r.json(); })
+    .then(function (c) {
+      el.textContent = Number(c.unique).toLocaleString('en-US');
+      if (Number(c.unique) === 1) document.getElementById('vlabel').textContent = 'unique visitor';
+      document.getElementById('visitorsbox').hidden = false;
+      if (stale) { try { localStorage.setItem('minty-seen', String(Date.now())); } catch (e) {} }
+    })
+    .catch(function () {});
 })();
 </script>
 </body>

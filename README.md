@@ -8,6 +8,8 @@ The video and Shorts rows load from the channel automatically (`/api/videos`, `/
 
 Games I play (`/api/games`): the games and their Roblox ids are listed in `server/games.mjs`; the server pulls each game's icon and screenshot from Roblox's public API (nothing is copied into the repo). Add a game by adding a `place` (the number in its roblox.com/games URL) or `universe` id.
 
+Visitor counter (`/api/site/visits`): counts unique browsers (once each) with no cookies and no stored IPs. Counts live in `DATA_DIR/visits.json`; on Railway add a volume and set `DATA_DIR=/data` or the count resets on each deploy.
+
 Subscriber count (`/api/channel`): set `YT_API_KEY` (a free YouTube Data API v3 key) for the exact, reliable number; without it the server reads the count from the channel page, which can break if YouTube changes it. The badge hides itself if no count is available.
 
 Edit the placeholders in `public/index.html`: YouTube link (`youtube.com/@Mintyplays8`), video cards, game cards, upload days and the contact email.

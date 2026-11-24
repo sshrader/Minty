@@ -5,10 +5,19 @@ import fs from 'node:fs/promises';
 import { latest } from './videos.mjs';
 import { subscribers } from './channel.mjs';
 import { games } from './games.mjs';
+import { counts, hit } from './visits.mjs';
 
 const PORT = Number(process.env.PORT) || 8787;
 const DIR = path.resolve(process.env.SITE_DIR || 'public');
 const TYPES = { '.html': 'text/html; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.ico': 'image/x-icon', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.txt': 'text/plain; charset=utf-8' };
+
+const ipOf = (req) => {
+  if (process.env.TRUST_PROXY) {
+    const xf = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim();
+    if (xf) return xf;
+  }
+  return req.socket.remoteAddress || 'unknown';
+};
 
 const send = (res, status, body, type = 'text/plain; charset=utf-8', extra = {}) => {
   res.writeHead(status, { 'content-type': type, 'x-content-type-options': 'nosniff', ...(process.env.HSTS ? { 'strict-transport-security': 'max-age=31536000' } : {}), ...extra });
@@ -22,6 +31,18 @@ http.createServer(async (req, res) => {
   if (url.pathname === '/api/shorts') return send(res, 200, JSON.stringify(await latest('shorts')), 'application/json; charset=utf-8', { 'cache-control': 'public, max-age=300' });
   if (url.pathname === '/api/channel') return send(res, 200, JSON.stringify((await subscribers()) ?? {}), 'application/json; charset=utf-8', { 'cache-control': 'public, max-age=600' });
   if (url.pathname === '/api/games') return send(res, 200, JSON.stringify(await games()), 'application/json; charset=utf-8', { 'cache-control': 'public, max-age=3600' });
+  if (url.pathname === '/api/site/visits') {
+    if (req.method === 'GET') return send(res, 200, JSON.stringify(counts()), 'application/json; charset=utf-8', { 'cache-control': 'no-store' });
+    if (req.method !== 'POST') return send(res, 405, 'Method not allowed');
+    let body = '';
+    req.on('data', (c) => { body += c; if (body.length > 500) req.destroy(); });
+    req.on('end', () => {
+      let first = false;
+      try { first = JSON.parse(body || '{}').first === true; } catch { /* count it as a returning visit */ }
+      send(res, 200, JSON.stringify(hit(ipOf(req), first)), 'application/json; charset=utf-8', { 'cache-control': 'no-store' });
+    });
+    return;
+  }
   if (req.method !== 'GET' && req.method !== 'HEAD') return send(res, 405, 'Method not allowed');
   let rel;
   try { rel = decodeURIComponent(url.pathname); } catch { rel = '/'; }
