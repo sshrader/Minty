@@ -113,11 +113,15 @@ section{padding:72px 0;position:relative}
 
 /* roblox */
 .games{background:var(--mint);border-block:4px solid var(--mint-deep)}
-.gamegrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
-.game{background:#fff;border-radius:var(--r);padding:20px;border:3px solid var(--mint-deep);text-align:center;box-shadow:0 6px 0 var(--mint-deep)}
-.game .ico{width:76px;height:76px;margin:0 auto 12px;border-radius:22px;display:grid;place-items:center;font-size:38px;border:3px solid var(--choc);background:var(--mint-2)}
+.gamegrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:22px}
+.game{display:flex;flex-direction:column;background:#fff;border-radius:var(--r);overflow:hidden;border:3px solid var(--mint-deep);box-shadow:0 7px 0 var(--mint-deep);transition:transform .15s}
+.game:hover{transform:translateY(-4px) rotate(-.5deg)}
+.game .pic{aspect-ratio:16/9;background:var(--mint-2) center/cover;display:grid;place-items:center;font-size:54px;border-bottom:3px solid var(--mint-deep)}
+.game .body{padding:14px 16px 18px;display:flex;flex-direction:column;gap:4px;flex:1}
 .game h3{font-size:22px}
-.game p{margin:6px 0 0;font-size:15px;color:var(--choc-2)}
+.game p{margin:0;font-size:15px;color:var(--choc-2);flex:1}
+.game .go{margin-top:8px;font-family:var(--head);font-weight:600;color:var(--mint-ink)}
+.credit{margin:22px 0 0;font-size:13px;color:var(--choc-2);opacity:.8}
 
 /* about */
 .about .wrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:44px;align-items:center}
@@ -235,12 +239,13 @@ footer .mini{font-family:var(--head);font-size:20px;color:var(--mint-ink);margin
     <div class="sec-head">
       <div><h2>Games I <i>love</i></h2><p>Where you'll find me on Roblox.</p></div>
     </div>
-    <div class="gamegrid">
-      <div class="game"><div class="ico">🏠</div><h3>Game one</h3><p>Why it's my favorite goes here.</p></div>
-      <div class="game"><div class="ico">🐾</div><h3>Game two</h3><p>Pets, fun and surprises.</p></div>
-      <div class="game"><div class="ico">🏃</div><h3>Game three</h3><p>Fast, silly and a little scary.</p></div>
-      <div class="game"><div class="ico">🍦</div><h3>Game four</h3><p>Cozy builds and good vibes.</p></div>
+    <div class="gamegrid" id="gamegrid">
+      <a class="game" href="https://www.roblox.com/games/15101393044" target="_blank" rel="noopener"><div class="pic">👗</div><div class="body"><h3>Dress to Impress</h3><p>Pick a theme, style the best outfit and strut the runway.</p><span class="go">Play →</span></div></a>
+      <a class="game" href="https://www.roblox.com/games/142823291" target="_blank" rel="noopener"><div class="pic">🔎</div><div class="body"><h3>Murder Mystery 2</h3><p>Who is the murderer? Hide, spot clues and survive the round.</p><span class="go">Play →</span></div></a>
+      <a class="game" href="https://www.roblox.com/discover?Keyword=Pinky%20Promise" target="_blank" rel="noopener"><div class="pic">🎀</div><div class="body"><h3>Pinky Promise</h3><p>A spooky party game. Keep your promise if you can!</p><span class="go">Play →</span></div></a>
+      <a class="game" href="https://www.roblox.com/discover?Keyword=Clean%20all%20the%20leaves" target="_blank" rel="noopener"><div class="pic">🍂</div><div class="body"><h3>Clean all the leaves</h3><p>Rake, blow and vacuum huge piles of leaves until every yard is spotless.</p><span class="go">Play →</span></div></a>
     </div>
+    <p class="credit">Game art belongs to each game's creators. Minty Plays is not affiliated with Roblox.</p>
   </div>
 </section>
 
@@ -310,6 +315,14 @@ footer .mini{font-family:var(--head);font-size:20px;color:var(--mint-ink);margin
     if (!c.text) return;
     document.getElementById('subcount').textContent = c.text;
     document.getElementById('subs').hidden = false;
+  }).catch(function () {});
+  fetch('/api/games').then(function (r) { return r.json(); }).then(function (g) {
+    if (!g.length) return;
+    document.getElementById('gamegrid').innerHTML = g.map(function (x) {
+      return '<a class="game" href="' + esc(x.url) + '" target="_blank" rel="noopener">' +
+        '<div class="pic"' + (x.image ? ' style="background-image:url(' + esc(x.image) + ')" role="img" aria-label="' + esc(x.name) + '">' : '>\ud83c\udfae') + '</div>' +
+        '<div class="body"><h3>' + esc(x.name) + '</h3><p>' + esc(x.blurb || '') + '</p><span class="go">Play \u2192</span></div></a>';
+    }).join('');
   }).catch(function () {});
   var load = function (url, done) { fetch(url).then(function (r) { return r.json(); }).then(function (v) { if (v.length) done(v); }).catch(function () {}); };
 

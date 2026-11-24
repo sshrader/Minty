@@ -4,6 +4,7 @@ import path from 'node:path';
 import fs from 'node:fs/promises';
 import { latest } from './videos.mjs';
 import { subscribers } from './channel.mjs';
+import { games } from './games.mjs';
 
 const PORT = Number(process.env.PORT) || 8787;
 const DIR = path.resolve(process.env.SITE_DIR || 'public');
@@ -20,6 +21,7 @@ http.createServer(async (req, res) => {
   if (url.pathname === '/api/videos') return send(res, 200, JSON.stringify(await latest('videos')), 'application/json; charset=utf-8', { 'cache-control': 'public, max-age=300' });
   if (url.pathname === '/api/shorts') return send(res, 200, JSON.stringify(await latest('shorts')), 'application/json; charset=utf-8', { 'cache-control': 'public, max-age=300' });
   if (url.pathname === '/api/channel') return send(res, 200, JSON.stringify((await subscribers()) ?? {}), 'application/json; charset=utf-8', { 'cache-control': 'public, max-age=600' });
+  if (url.pathname === '/api/games') return send(res, 200, JSON.stringify(await games()), 'application/json; charset=utf-8', { 'cache-control': 'public, max-age=3600' });
   if (req.method !== 'GET' && req.method !== 'HEAD') return send(res, 405, 'Method not allowed');
   let rel;
   try { rel = decodeURIComponent(url.pathname); } catch { rel = '/'; }
